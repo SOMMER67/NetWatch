@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NetWatch | Tableau de bord</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    <header>
+        <h1>NetWatch</h1>
+        <p>Plateforme de supervision réseau</p>
+
+        <nav>
+            <a href="/">Accueil</a>
+            <a href="/about">À propos</a>
+            <a href="/report">Signaler un incident</a>
+        </nav>
+    </header>
+
+    <main>
+        <h2>Tableau de bord</h2>
+        <p>Bienvenue sur votre plateforme de supervision réseau.</p>
+
+        <section>
+            <h3>Vue générale</h3>
+
+            <p>Nombre total d'équipements : <strong>{{ total }}</strong></p>
+            <p>Équipements en ligne : <strong>{{ en_ligne }}</strong></p>
+            <p>Équipements hors ligne : <strong>{{ hors_ligne }}</strong></p>
+            <p>Disponibilité du réseau : <strong>{{ disponibilite }} %</strong></p>
+        </section>
+
+        <section>
+            <h3>Liste des équipements</h3>
+
+            <table border="1" cellpadding="8">
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Adresse IP</th>
+                        <th>Type</th>
+                        <th>État</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for equipement in equipements %}
+                    <tr>
+                        <td>{{ equipement.nom }}</td>
+                        <td>{{ equipement.adresse_ip }}</td>
+                        <td>{{ equipement.type }}</td>
+                        <td>{{ equipement.statut }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+
+        <p><em>Projet pédagogique : les états affichés sont simulés.</em></p>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 NetWatch - Projet de déploiement cloud</p>
+    </footer>
+</body>
+</html>

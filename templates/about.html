@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>NetWatch | À propos</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <header>
+        <h1>NetWatch</h1>
+        <p>Plateforme de supervision réseau</p>
+
+        <nav>
+            <a href="/">Accueil</a>
+            <a href="/about">À propos</a>
+            <a href="/report">Signaler un incident</a>
+        </nav>
+    </header>
+
+    <main>
+        <h2>À propos de NetWatch</h2>
+
+        <section>
+            <h3>Présentation du projet</h3>
+
+            <p>
+                NetWatch est une application web de démonstration
+                conçue pour présenter les principes de la supervision
+                d'un réseau informatique.
+            </p>
+        </section>
+
+        <section>
+            <h3>Objectifs</h3>
+
+            <ul>
+                <li>Afficher les équipements d'un réseau.</li>
+                <li>Consulter leur état de fonctionnement.</li>
+                <li>Visualiser les statistiques de disponibilité.</li>
+                <li>Préparer le signalement des incidents réseau.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h3>Technologies utilisées</h3>
+
+            <ul>
+                <li><strong>Python :</strong> logique de l'application.</li>
+                <li><strong>Flask :</strong> framework web.</li>
+                <li><strong>HTML :</strong> structure des pages.</li>
+                <li><strong>CSS :</strong> présentation graphique.</li>
+                <li><strong>Docker :</strong> conteneurisation prévue.</li>
+                <li><strong>AWS EC2 :</strong> hébergement cloud prévu.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h3>Limites actuelles</h3>
+
+            <p>
+                Les équipements et leurs états sont simulés.
+                Cette version ne réalise pas encore de tests réseau
+                en temps réel.
+            </p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 NetWatch - Projet pédagogique</p>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>NetWatch | Signaler un incident</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <header>
+        <h1>NetWatch</h1>
+        <p>Plateforme de supervision réseau</p>
+
+        <nav>
+            <a href="/">Accueil</a>
+            <a href="/about">À propos</a>
+            <a href="/report">Signaler un incident</a>
+        </nav>
+    </header>
+
+    <main>
+        <h2>Signaler un incident</h2>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="message {{ category }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+        <p>
+            Utilisez ce formulaire pour décrire un problème
+            rencontré sur un équipement réseau.
+        </p>
+
+        <section>
+            <h3>Formulaire de signalement</h3>
+
+            <form action="/report" method="POST">
+
+                <p>
+                    <label for="equipment">Équipement concerné :</label>
+                    <br>
+
+                    <select id="equipment" name="equipment" required>
+                        <option value="">-- Choisir un équipement --</option>
+                        <option value="Serveur principal">Serveur principal</option>
+                        <option value="Routeur central">Routeur central</option>
+                        <option value="Switch étage 1">Switch étage 1</option>
+                        <option value="Serveur de sauvegarde">Serveur de sauvegarde</option>
+                    </select>
+                </p>
+
+                <p>
+                    <label for="description">Description du problème :</label>
+                    <br>
+
+                    <textarea
+                        id="description"
+                        name="description"
+                        rows="6"
+                        required
+                        placeholder="Décrivez le problème rencontré..."
+                    ></textarea>
+                </p>
+
+                <button type="submit">Envoyer le signalement</button>
+
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 NetWatch - Projet pédagogique</p>
+    </footer>
+
+</body>
+</html>
