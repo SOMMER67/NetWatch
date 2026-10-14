@@ -4,38 +4,38 @@
 
 NetWatch est une application web développée avec Python et Flask dans le cadre d'un mini-projet pédagogique consacré à la conteneurisation et au déploiement d'applications dans le cloud.
 
-Son objectif est de proposer une interface simple permettant de consulter l'état d'équipements réseau et de signaler des incidents.
+Elle propose une interface permettant de consulter l'état simulé d'équipements réseau et de signaler des incidents.
 
 ## 2. Fonctionnalités
 
-* Tableau de bord présentant des statistiques sur les équipements.
-* Consultation de la liste des équipements réseau.
-* Page de présentation du projet.
-* Formulaire de signalement d'incidents.
-* Messages de confirmation après l'envoi d'un signalement.
-* Interface web utilisant HTML et CSS.
+- Tableau de bord avec des statistiques sur les équipements.
+- Consultation des équipements réseau simulés.
+- Page de présentation du projet.
+- Formulaire de signalement d'incidents.
+- Messages de confirmation après un signalement.
+- Interface web en HTML et CSS.
 
 **Remarque :** les équipements affichés sont des données de démonstration. L'application ne réalise pas encore de supervision réseau réelle.
 
 ## 3. Technologies utilisées
 
-* Python
-* Flask
-* HTML5
-* CSS3
-* Git et GitHub
-* Docker
-* AWS EC2 (déploiement prévu dans le cadre du projet)
+- Python
+- Flask
+- HTML5 et CSS3
+- Git et GitHub
+- Docker
+- AWS EC2 pour le déploiement prévu
 
 ## 4. Structure du projet
 
 ```text
 NetWatch/
 ├── app.py
+├── Dockerfile
+├── .dockerignore
 ├── .gitignore
 ├── README.md
 ├── requirements.txt
-├── Dockerfile
 ├── templates/
 │   ├── index.html
 │   ├── about.html
@@ -45,27 +45,14 @@ NetWatch/
         └── style.css
 ```
 
-Certains fichiers, notamment `requirements.txt` et `Dockerfile`, seront ajoutés lors des prochaines étapes.
-
 ## 5. Installation et lancement en local
 
 ### Prérequis
 
-* Python installé.
-* Git installé.
+- Python installé.
+- Git installé.
 
-### Cloner le projet
-
-```bash
-git clone <URL_DU_DEPOT_GITHUB>
-cd NetWatch
-```
-
-Remplacez `<URL_DU_DEPOT_GITHUB>` par l'adresse réelle du dépôt GitHub.
-
-### Créer un environnement virtuel
-
-Sous Windows :
+### Créer un environnement virtuel sous Windows
 
 ```powershell
 python -m venv .venv
@@ -79,8 +66,6 @@ python -m venv .venv
 
 ### Installer les dépendances
 
-Après la création du fichier `requirements.txt` :
-
 ```powershell
 pip install -r requirements.txt
 ```
@@ -91,30 +76,82 @@ pip install -r requirements.txt
 python app.py
 ```
 
-Ouvrez ensuite votre navigateur à l'adresse :
+Ouvrir ensuite http://127.0.0.1:5000 dans le navigateur.
 
-http://127.0.0.1:5000
+## 6. Utilisation avec Docker
 
-## 6. Limites actuelles
+### Prérequis
 
-* Les données des équipements sont simulées.
-* Les signalements sont conservés temporairement en mémoire.
-* Les signalements disparaissent lorsque l'application redémarre.
-* La connexion à de véritables équipements réseau n'est pas encore implémentée.
+Docker Desktop doit être installé et démarré.
 
-## 7. Équipe
+### Construire l'image
+
+Depuis le dossier du projet :
+
+```powershell
+docker build -t netwatch:v1 .
+```
+
+### Lancer un conteneur de test
+
+```powershell
+docker run -d --name netwatch-test -p 5001:5000 netwatch:v1
+```
+
+Si le nom du conteneur est déjà utilisé, vérifier les conteneurs existants avec :
+
+```powershell
+docker ps -a
+```
+
+### Accéder à l'application
+
+Ouvrir http://localhost:5001 dans le navigateur.
+
+### Vérifier les conteneurs en cours d'exécution
+
+```powershell
+docker ps
+```
+
+### Consulter les journaux
+
+```powershell
+docker logs netwatch-test
+```
+
+### Arrêter le conteneur
+
+```powershell
+docker stop netwatch-test
+```
+
+### Supprimer le conteneur arrêté
+
+```powershell
+docker rm netwatch-test
+```
+
+## 7. Limites actuelles
+
+- Les données des équipements sont simulées.
+- Les signalements sont conservés temporairement en mémoire.
+- Les signalements disparaissent au redémarrage de l'application.
+- La connexion à de véritables équipements réseau n'est pas encore implémentée.
+
+## 8. Équipe
 
 Projet réalisé dans le cadre d'un mini-projet pédagogique.
 
 Les membres de l'équipe et leurs contributions seront documentés au fur et à mesure de l'avancement.
 
-## 8. Évolutions prévues
+## 9. Évolutions prévues
 
-* Conteneurisation de l'application avec Docker.
-* Publication de l'image sur Docker Hub.
-* Déploiement sur une instance AWS EC2.
-* Accès à l'application depuis Internet.
-* Amélioration de la documentation et des tests.
+- Publication du code sur GitHub.
+- Publication de l'image sur Docker Hub.
+- Déploiement sur une instance AWS EC2.
+- Accès à l'application depuis Internet.
+- Amélioration de la documentation et des tests.
 
 ---
 
