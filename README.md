@@ -4,29 +4,36 @@
 
 NetWatch est une application web développée avec Python et Flask dans le cadre d'un mini-projet pédagogique consacré à la conteneurisation et au déploiement d'applications dans le cloud.
 
-Elle propose une interface permettant de consulter l'état simulé d'équipements réseau et de signaler des incidents.
+Elle permet de consulter un tableau de bord présentant des équipements réseau simulés et de signaler des incidents.
 
-## 2. Fonctionnalités
+## 2. Liens du projet
 
-- Tableau de bord avec des statistiques sur les équipements.
-- Consultation des équipements réseau simulés.
-- Page de présentation du projet.
-- Formulaire de signalement d'incidents.
-- Messages de confirmation après un signalement.
-- Interface web en HTML et CSS.
+* **Application en ligne :** http://13.53.48.105:5001
+* **Code source GitHub :** https://github.com/SOMMER67/NetWatch
+* **Image Docker Hub :** https://hub.docker.com/r/sommer369/netwatch
+
+## 3. Fonctionnalités
+
+* Tableau de bord avec des statistiques sur les équipements.
+* Consultation des équipements réseau simulés.
+* Page de présentation du projet.
+* Formulaire de signalement d'incidents.
+* Messages de confirmation après un signalement.
+* Interface web en HTML et CSS.
 
 **Remarque :** les équipements affichés sont des données de démonstration. L'application ne réalise pas encore de supervision réseau réelle.
 
-## 3. Technologies utilisées
+## 4. Technologies utilisées
 
-- Python
-- Flask
-- HTML5 et CSS3
-- Git et GitHub
-- Docker
-- AWS EC2 pour le déploiement prévu
+* Python 3.12
+* Flask
+* HTML5 et CSS3
+* Git et GitHub
+* Docker
+* Docker Hub
+* AWS EC2
 
-## 4. Structure du projet
+## 5. Structure du projet
 
 ```text
 NetWatch/
@@ -45,20 +52,21 @@ NetWatch/
         └── style.css
 ```
 
-## 5. Installation et lancement en local
+## 6. Installation et lancement en local
 
 ### Prérequis
 
-- Python installé.
-- Git installé.
+* Python installé.
+* Git installé.
+* Docker Desktop installé pour les tests avec Docker.
 
-### Créer un environnement virtuel sous Windows
+### Créer un environnement virtuel
 
 ```powershell
 python -m venv .venv
 ```
 
-### Activer l'environnement virtuel
+### Activer l'environnement virtuel sous Windows
 
 ```powershell
 .\.venv\Scripts\Activate.ps1
@@ -70,7 +78,7 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-### Lancer l'application
+### Lancer l'application Flask
 
 ```powershell
 python app.py
@@ -78,11 +86,7 @@ python app.py
 
 Ouvrir ensuite http://127.0.0.1:5000 dans le navigateur.
 
-## 6. Utilisation avec Docker
-
-### Prérequis
-
-Docker Desktop doit être installé et démarré.
+## 7. Utilisation avec Docker
 
 ### Construire l'image
 
@@ -98,17 +102,11 @@ docker build -t netwatch:v1 .
 docker run -d --name netwatch-test -p 5001:5000 netwatch:v1
 ```
 
-Si le nom du conteneur est déjà utilisé, vérifier les conteneurs existants avec :
-
-```powershell
-docker ps -a
-```
-
 ### Accéder à l'application
 
 Ouvrir http://localhost:5001 dans le navigateur.
 
-### Vérifier les conteneurs en cours d'exécution
+### Vérifier les conteneurs
 
 ```powershell
 docker ps
@@ -120,38 +118,73 @@ docker ps
 docker logs netwatch-test
 ```
 
-### Arrêter le conteneur
+### Arrêter et supprimer le conteneur de test
 
 ```powershell
 docker stop netwatch-test
-```
-
-### Supprimer le conteneur arrêté
-
-```powershell
 docker rm netwatch-test
 ```
 
-## 7. Limites actuelles
+## 8. Publication de l'image Docker
 
-- Les données des équipements sont simulées.
-- Les signalements sont conservés temporairement en mémoire.
-- Les signalements disparaissent au redémarrage de l'application.
-- La connexion à de véritables équipements réseau n'est pas encore implémentée.
+L'image NetWatch v1 est publiée sur Docker Hub.
 
-## 8. Équipe
+Pour la télécharger :
+
+```bash
+docker pull sommer369/netwatch:v1
+```
+
+## 9. Déploiement sur AWS EC2
+
+L'application est déployée sur une instance AWS EC2 sous Ubuntu.
+
+### Télécharger l'image sur le serveur
+
+```bash
+sudo docker pull sommer369/netwatch:v1
+```
+
+### Lancer le conteneur
+
+```bash
+sudo docker run -d --name netwatch-container -p 5001:5000 --restart unless-stopped sommer369/netwatch:v1
+```
+
+### Vérifier le conteneur
+
+```bash
+sudo docker ps
+```
+
+### Accéder à l'application depuis Internet
+
+Ouvrir :
+
+http://13.53.48.105:5001
+
+Le port TCP 5001 doit être autorisé dans les règles entrantes du groupe de sécurité AWS.
+
+## 10. Limites actuelles
+
+* Les données des équipements sont simulées.
+* Les signalements sont conservés temporairement en mémoire.
+* Les signalements disparaissent au redémarrage de l'application.
+* La connexion à de véritables équipements réseau n'est pas encore implémentée.
+
+## 11. Équipe
 
 Projet réalisé dans le cadre d'un mini-projet pédagogique.
 
-Les membres de l'équipe et leurs contributions seront documentés au fur et à mesure de l'avancement.
+Les membres de l'équipe et leurs contributions doivent être renseignés avant la remise finale du projet.
 
-## 9. Évolutions prévues
+## 12. Améliorations possibles
 
-- Publication du code sur GitHub.
-- Publication de l'image sur Docker Hub.
-- Déploiement sur une instance AWS EC2.
-- Accès à l'application depuis Internet.
-- Amélioration de la documentation et des tests.
+* Connecter l'application à de véritables équipements réseau.
+* Ajouter une base de données pour conserver les signalements.
+* Mettre en place une authentification.
+* Ajouter des tests automatisés.
+* Améliorer la surveillance et la journalisation.
 
 ---
 
