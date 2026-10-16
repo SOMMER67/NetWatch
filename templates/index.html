@@ -3,66 +3,499 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NetWatch | Tableau de bord</title>
+    <meta name="description" content="NetWatch — Tableau de bord de supervision réseau haute performance. Vue en temps réel des équipements, disponibilité et métriques d'infrastructure.">
+    <title>NetWatch | Supervision Réseau & Infrastructure</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome (Icônes) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
+    <!-- Style NetWatch -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 
 <body>
-    <header>
-        <h1>NetWatch</h1>
-        <p>Plateforme de supervision réseau</p>
 
-        <nav>
-            <a href="/">Accueil</a>
-            <a href="/about">À propos</a>
-            <a href="/report">Signaler un incident</a>
-        </nav>
+    <!-- ========================================
+         Barre de navigation supérieure (Header)
+         ======================================== -->
+    <header class="top-nav">
+        <div class="nav-container">
+
+            <!-- Logo & Marque -->
+            <a href="/" class="brand-group" aria-label="NetWatch Accueil">
+                <div class="brand-symbol">
+                    <i class="fa-solid fa-network-wired"></i>
+                    <span class="symbol-glow"></span>
+                </div>
+                <div class="brand-text">
+                    <span class="brand-name">Net<span class="brand-accent">Watch</span></span>
+                    <span class="brand-tag">NOC &bull; Network Ops Center</span>
+                </div>
+            </a>
+
+            <!-- Badge statut télémétrie en direct -->
+            <div class="system-pulse-badge">
+                <span class="pulse-beacon">
+                    <span class="beacon-ring"></span>
+                    <span class="beacon-dot"></span>
+                </span>
+                <span class="pulse-text">Télémétrie en direct</span>
+            </div>
+
+            <!-- Navigation principale -->
+            <nav class="nav-links" aria-label="Navigation principale">
+                <a href="/" id="nav-accueil" class="nav-item active">
+                    <i class="fa-solid fa-chart-pie nav-icon"></i>
+                    <span>Tableau de bord</span>
+                </a>
+                <a href="/about" id="nav-about" class="nav-item">
+                    <i class="fa-solid fa-circle-nodes nav-icon"></i>
+                    <span>À propos</span>
+                </a>
+                <a href="/report" id="nav-report" class="nav-item nav-action">
+                    <i class="fa-solid fa-triangle-exclamation nav-icon"></i>
+                    <span>Signaler un incident</span>
+                </a>
+            </nav>
+
+        </div>
     </header>
 
-    <main>
-        <h2>Tableau de bord</h2>
-        <p>Bienvenue sur votre plateforme de supervision réseau.</p>
+    <!-- ========================================
+         Contenu principal du tableau de bord
+         ======================================== -->
+    <main class="dashboard-shell">
 
-        <section>
-            <h3>Vue générale</h3>
+        <!-- En-tête de section avec métadonnées temps réel -->
+        <section class="dashboard-hero animate__animated animate__fadeIn">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <span>Supervision d'infrastructure active</span>
+                </div>
+                <h1 class="hero-title">Vue d'ensemble du réseau</h1>
+                <p class="hero-description">
+                    Surveillance temps réel des nœuds réseau, serveurs critiques et disponibilité globale du parc informatique.
+                </p>
+            </div>
 
-            <p>Nombre total d'équipements : <strong>{{ total }}</strong></p>
-            <p>Équipements en ligne : <strong>{{ en_ligne }}</strong></p>
-            <p>Équipements hors ligne : <strong>{{ hors_ligne }}</strong></p>
-            <p>Disponibilité du réseau : <strong>{{ disponibilite }} %</strong></p>
+            <!-- Widget d'état rapide / horodatage -->
+            <div class="hero-actions">
+                <div class="sync-status">
+                    <span class="sync-dot"></span>
+                    <span>Actualisation auto : <strong id="live-clock">--:--:--</strong></span>
+                </div>
+                <button class="btn-refresh" id="btn-refresh" title="Rafraîchir les métriques" onclick="window.location.reload();">
+                    <i class="fa-solid fa-arrows-rotate"></i>
+                    <span>Actualiser</span>
+                </button>
+            </div>
         </section>
 
-        <section>
-            <h3>Liste des équipements</h3>
+        <!-- ========================================
+             Grille des cartes statistiques (KPIs)
+             ======================================== -->
+        <section class="stats-grid" aria-label="Indicateurs clés de performance">
 
-            <table border="1" cellpadding="8">
-                <thead>
-                    <tr>
-                        <th>Nom</th>
-                        <th>Adresse IP</th>
-                        <th>Type</th>
-                        <th>État</th>
-                    </tr>
-                </thead>
+            <!-- KPI 1 : Total équipements -->
+            <article class="stat-card kpi-card cyan animate__animated animate__fadeInUp" style="animation-delay: 0.05s;">
+                <div class="kpi-card-glow"></div>
+                <div class="stat-card-header kpi-card-top">
+                    <span class="stat-label kpi-label">Équipements supervisés</span>
+                    <div class="stat-icon kpi-icon-box cyan">
+                        <i class="fa-solid fa-server"></i>
+                    </div>
+                </div>
+                <div class="kpi-value-row">
+                    <span class="stat-value kpi-value cyan">{{ total }}</span>
+                    <span class="kpi-trend neutral">
+                        <i class="fa-solid fa-layer-group"></i> Nœuds
+                    </span>
+                </div>
+                <div class="stat-sublabel kpi-footer">
+                    <span class="kpi-subtext">Inventaire global du réseau</span>
+                </div>
+            </article>
 
-                <tbody>
-                    {% for equipement in equipements %}
-                    <tr>
-                        <td>{{ equipement.nom }}</td>
-                        <td>{{ equipement.adresse_ip }}</td>
-                        <td>{{ equipement.type }}</td>
-                        <td>{{ equipement.statut }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <!-- KPI 2 : Équipements en ligne -->
+            <article class="stat-card kpi-card emerald animate__animated animate__fadeInUp" style="animation-delay: 0.12s;">
+                <div class="kpi-card-glow"></div>
+                <div class="stat-card-header kpi-card-top">
+                    <span class="stat-label kpi-label">Opérationnels</span>
+                    <div class="stat-icon kpi-icon-box green">
+                        <i class="fa-solid fa-circle-check"></i>
+                    </div>
+                </div>
+                <div class="kpi-value-row">
+                    <span class="stat-value kpi-value green">{{ en_ligne }}</span>
+                    <span class="kpi-trend positive">
+                        <i class="fa-solid fa-arrow-trend-up"></i> En ligne
+                    </span>
+                </div>
+                <div class="stat-sublabel kpi-footer">
+                    <span class="kpi-subtext">Communications actives</span>
+                </div>
+            </article>
+
+            <!-- KPI 3 : Équipements hors ligne -->
+            <article class="stat-card kpi-card rose animate__animated animate__fadeInUp" style="animation-delay: 0.18s;">
+                <div class="kpi-card-glow"></div>
+                <div class="stat-card-header kpi-card-top">
+                    <span class="stat-label kpi-label">En panne / Injoignables</span>
+                    <div class="stat-icon kpi-icon-box red">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                    </div>
+                </div>
+                <div class="kpi-value-row">
+                    <span class="stat-value kpi-value red">{{ hors_ligne }}</span>
+                    {% if hors_ligne > 0 %}
+                    <span class="kpi-trend negative">
+                        <i class="fa-solid fa-bell"></i> Attention
+                    </span>
+                    {% else %}
+                    <span class="kpi-trend positive">
+                        <i class="fa-solid fa-shield-check"></i> 0 anomalie
+                    </span>
+                    {% endif %}
+                </div>
+                <div class="stat-sublabel kpi-footer">
+                    <span class="kpi-subtext">Nécessite intervention</span>
+                </div>
+            </article>
+
+            <!-- KPI 4 : Taux de disponibilité -->
+            <article class="stat-card kpi-card violet animate__animated animate__fadeInUp" style="animation-delay: 0.25s;">
+                <div class="kpi-card-glow"></div>
+                <div class="stat-card-header kpi-card-top">
+                    <span class="stat-label kpi-label">Disponibilité globale</span>
+                    <div class="stat-icon kpi-icon-box purple">
+                        <i class="fa-solid fa-wave-square"></i>
+                    </div>
+                </div>
+                <div class="kpi-value-row">
+                    <span class="stat-value kpi-value purple">{{ disponibilite }}<span class="kpi-unit">%</span></span>
+                    <span class="kpi-trend target">
+                        <i class="fa-solid fa-bullseye"></i> SLA 99%
+                    </span>
+                </div>
+                <!-- Jauge de progression dynamique -->
+                <div class="stat-progress kpi-meter-wrapper">
+                    <div class="stat-progress-bar kpi-meter-fill" id="kpi-disponibilite-fill"></div>
+                </div>
+                <div class="stat-sublabel kpi-footer">
+                    <span class="kpi-subtext">Taux de réponse du parc</span>
+                </div>
+            </article>
+
         </section>
 
-        <p><em>Projet pédagogique : les états affichés sont simulés.</em></p>
+        <!-- ========================================
+             Section Table des équipements réseau
+             ======================================== -->
+        <section class="panel-section animate__animated animate__fadeInUp" style="animation-delay: 0.3s;">
+
+            <div class="panel-header">
+                <div class="panel-header-info">
+                    <div class="panel-title-group">
+                        <div class="panel-icon-wrap">
+                            <i class="fa-solid fa-network-wired"></i>
+                        </div>
+                        <div>
+                            <h2 class="panel-title">Inventaire des équipements</h2>
+                            <p class="panel-subtitle">État de santé et adressage IP des serveurs, routeurs et commutateurs</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filtres rapides et recherche -->
+                <div class="panel-controls">
+                    <div class="search-box">
+                        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                        <input type="text" id="device-search" placeholder="Filtrer par nom, IP, type..." aria-label="Rechercher un équipement">
+                        <button type="button" id="clear-search" class="clear-btn" title="Effacer" style="display:none;">&times;</button>
+                    </div>
+
+                    <div class="filter-pills" role="tablist">
+                        <button class="filter-pill active" data-filter="all" role="tab">Tous ({{ total }})</button>
+                        <button class="filter-pill" data-filter="online" role="tab">En ligne ({{ en_ligne }})</button>
+                        <button class="filter-pill" data-filter="offline" role="tab">Hors ligne ({{ hors_ligne }})</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tableau responsive -->
+            <div class="table-container">
+                <table class="nodes-table" id="nodes-table" aria-label="Tableau de supervision des équipements">
+                    <thead>
+                        <tr>
+                            <th scope="col"><i class="fa-solid fa-server table-th-icon"></i> Équipement</th>
+                            <th scope="col"><i class="fa-solid fa-terminal table-th-icon"></i> Adresse IP</th>
+                            <th scope="col"><i class="fa-solid fa-diagram-project table-th-icon"></i> Type</th>
+                            <th scope="col"><i class="fa-solid fa-gauge table-th-icon"></i> Latence estimée</th>
+                            <th scope="col" style="text-align: right;"><i class="fa-solid fa-circle-dot table-th-icon"></i> Statut opérationnel</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="nodes-tbody">
+                        {% for equipement in equipements %}
+                        <tr class="node-row" data-name="{{ equipement.nom | lower }}" data-ip="{{ equipement.adresse_ip }}" data-type="{{ equipement.type | lower }}" data-status="{{ 'online' if equipement.statut == 'En ligne' else 'offline' }}">
+                            
+                            <!-- Équipement & Icône spécifique -->
+                            <td>
+                                <div class="node-identity">
+                                    <div class="node-avatar {{ 'type-server' if equipement.type == 'Serveur' else ('type-router' if equipement.type == 'Routeur' else ('type-switch' if equipement.type == 'Commutateur' else 'type-generic')) }}">
+                                        {% if equipement.type == 'Serveur' %}
+                                            <i class="fa-solid fa-server"></i>
+                                        {% elif equipement.type == 'Routeur' %}
+                                            <i class="fa-solid fa-route"></i>
+                                        {% elif equipement.type == 'Commutateur' %}
+                                            <i class="fa-solid fa-arrows-split-up-and-left"></i>
+                                        {% else %}
+                                            <i class="fa-solid fa-microchip"></i>
+                                        {% endif %}
+                                    </div>
+                                    <div class="node-meta">
+                                        <span class="node-name">{{ equipement.nom }}</span>
+                                        <span class="node-id">#NET-0{{ loop.index }}</span>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <!-- Adresse IP avec copie rapide -->
+                            <td>
+                                <button type="button" class="ip-chip" onclick="copyIp('{{ equipement.adresse_ip }}', this)" title="Cliquer pour copier l'IP">
+                                    <i class="fa-regular fa-copy ip-copy-icon"></i>
+                                    <code>{{ equipement.adresse_ip }}</code>
+                                </button>
+                            </td>
+
+                            <!-- Type d'équipement -->
+                            <td>
+                                <span class="category-badge {{ 'cat-server' if equipement.type == 'Serveur' else ('cat-router' if equipement.type == 'Routeur' else 'cat-switch') }}">
+                                    {{ equipement.type }}
+                                </span>
+                            </td>
+
+                            <!-- Latence simulée -->
+                            <td>
+                                {% if equipement.statut == 'En ligne' %}
+                                    <span class="latency-pill good">
+                                        <i class="fa-solid fa-bolt-lightning"></i>
+                                        {{ loop.index * 4 + 7 }} ms
+                                    </span>
+                                {% else %}
+                                    <span class="latency-pill dead">
+                                        <i class="fa-solid fa-ban"></i>
+                                        Timeout
+                                    </span>
+                                {% endif %}
+                            </td>
+
+                            <!-- Statut avec badge haute visibilité -->
+                            <td style="text-align: right;">
+                                {% if equipement.statut == 'En ligne' %}
+                                    <span class="status-badge status-indicator online">
+                                        <span class="dot indicator-beacon"></span>
+                                        <span class="indicator-label">En ligne</span>
+                                    </span>
+                                {% else %}
+                                    <span class="status-badge status-indicator offline">
+                                        <span class="dot indicator-beacon"></span>
+                                        <span class="indicator-label">Hors ligne</span>
+                                    </span>
+                                {% endif %}
+                            </td>
+
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <!-- Message état vide si aucun équipement ne correspond à la recherche -->
+                <div id="no-results" class="empty-state" style="display: none;">
+                    <div class="empty-icon"><i class="fa-solid fa-filter-circle-xmark"></i></div>
+                    <h3>Aucun équipement trouvé</h3>
+                    <p>Aucun appareil ne correspond à vos critères de recherche actuels.</p>
+                </div>
+            </div>
+
+            <!-- Pied de tableau avec synthèse -->
+            <div class="panel-footer">
+                <div class="footer-stat">
+                    <span class="footer-stat-label">Capacité monitorée :</span>
+                    <span class="footer-stat-val">{{ total }} nœuds réseau</span>
+                </div>
+                <div class="footer-stat">
+                    <span class="footer-stat-label">Protocole :</span>
+                    <span class="footer-stat-val">ICMP / SNMP v3</span>
+                </div>
+                <div class="footer-stat">
+                    <span class="footer-stat-label">Environnement :</span>
+                    <span class="footer-stat-val badge-env">Simulation Démo</span>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Notification pédagogique discrète -->
+        <aside class="academic-notice animate__animated animate__fadeIn">
+            <i class="fa-solid fa-graduation-cap notice-icon"></i>
+            <div>
+                <strong>Plateforme pédagogique Cloud & Réseau</strong>
+                <p>Les métriques et latences affichées sont simulées à des fins d'apprentissage du déploiement continu et de la conteneurisation Docker.</p>
+            </div>
+        </aside>
+
     </main>
 
-    <footer>
-        <p>&copy; 2026 NetWatch - Projet de déploiement cloud</p>
+    <!-- ========================================
+         Pied de page (Footer)
+         ======================================== -->
+    <footer class="app-footer">
+        <div class="footer-shell">
+            <div class="footer-brand-side">
+                <div class="footer-logo">
+                    <i class="fa-solid fa-network-wired"></i>
+                    <span>NetWatch</span>
+                </div>
+                <p class="footer-tagline">Solution moderne de surveillance réseau et télémétrie d'infrastructure.</p>
+            </div>
+
+            <div class="footer-nav">
+                <a href="/"><i class="fa-solid fa-chart-pie"></i> Tableau de bord</a>
+                <a href="/about"><i class="fa-solid fa-circle-info"></i> À propos du projet</a>
+                <a href="/report"><i class="fa-solid fa-triangle-exclamation"></i> Signaler un incident</a>
+            </div>
+
+            <div class="footer-legal">
+                <span>&copy; 2026 NetWatch &bull; Déploiement Cloud & Supervision</span>
+                <span class="legal-badge">Python Flask / Docker</span>
+            </div>
+        </div>
     </footer>
+
+    <!-- Toast pour confirmation de copie d'IP -->
+    <div id="toast" class="toast-popup" role="alert" aria-live="polite"></div>
+
+    <!-- Scripts fonctionnels intégrés (Horloge, Recherche, Copie d'IP, Jauge) -->
+    <script>
+        // 1. Initialisation de la jauge de disponibilité sans problème de linter CSS
+        document.addEventListener('DOMContentLoaded', () => {
+            const meterFill = document.getElementById('kpi-disponibilite-fill');
+            if (meterFill) {
+                // Animation fluide de la jauge
+                setTimeout(() => {
+                    meterFill.style.width = '{{ disponibilite }}%';
+                }, 150);
+            }
+
+            // 2. Horloge temps réel
+            function updateClock() {
+                const clockEl = document.getElementById('live-clock');
+                if (clockEl) {
+                    const now = new Date();
+                    clockEl.textContent = now.toLocaleTimeString('fr-FR', {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        second: '2-digit'
+                    });
+                }
+            }
+            updateClock();
+            setInterval(updateClock, 1000);
+
+            // 3. Filtrage en temps réel des équipements (recherche + boutons statut)
+            const searchInput = document.getElementById('device-search');
+            const clearBtn = document.getElementById('clear-search');
+            const filterPills = document.querySelectorAll('.filter-pills .filter-pill');
+            const rows = document.querySelectorAll('#nodes-tbody .node-row');
+            const noResults = document.getElementById('no-results');
+
+            let currentFilter = 'all';
+
+            function applyFilters() {
+                const query = (searchInput.value || '').toLowerCase().trim();
+                let visibleCount = 0;
+
+                rows.forEach(row => {
+                    const name = row.getAttribute('data-name') || '';
+                    const ip = row.getAttribute('data-ip') || '';
+                    const type = row.getAttribute('data-type') || '';
+                    const status = row.getAttribute('data-status') || '';
+
+                    const matchesQuery = !query || name.includes(query) || ip.includes(query) || type.includes(query);
+                    const matchesStatus = (currentFilter === 'all') || (currentFilter === status);
+
+                    if (matchesQuery && matchesStatus) {
+                        row.style.display = '';
+                        visibleCount++;
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+
+                if (noResults) {
+                    noResults.style.display = visibleCount === 0 ? 'block' : 'none';
+                }
+            }
+
+            if (searchInput) {
+                searchInput.addEventListener('input', () => {
+                    if (clearBtn) {
+                        clearBtn.style.display = searchInput.value ? 'block' : 'none';
+                    }
+                    applyFilters();
+                });
+            }
+
+            if (clearBtn) {
+                clearBtn.addEventListener('click', () => {
+                    searchInput.value = '';
+                    clearBtn.style.display = 'none';
+                    searchInput.focus();
+                    applyFilters();
+                });
+            }
+
+            filterPills.forEach(pill => {
+                pill.addEventListener('click', () => {
+                    filterPills.forEach(p => p.classList.remove('active'));
+                    pill.classList.add('active');
+                    currentFilter = pill.getAttribute('data-filter');
+                    applyFilters();
+                });
+            });
+        });
+
+        // Fonction utilitaire pour copier l'adresse IP avec notification toast
+        function copyIp(ip, buttonElement) {
+            navigator.clipboard.writeText(ip).then(() => {
+                showToast(`Adresse IP ${ip} copiée dans le presse-papier !`);
+                buttonElement.classList.add('copied');
+                setTimeout(() => buttonElement.classList.remove('copied'), 1500);
+            }).catch(() => {
+                showToast(`IP : ${ip}`);
+            });
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            if (!toast) return;
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2500);
+        }
+    </script>
+
 </body>
 </html>

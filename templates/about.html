@@ -3,75 +3,181 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <meta name="description" content="À propos de NetWatch — Présentation du projet, objectifs et technologies utilisées pour la supervision réseau.">
     <title>NetWatch | À propos</title>
 
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 
 <body>
 
-    <header>
-        <h1>NetWatch</h1>
-        <p>Plateforme de supervision réseau</p>
+    <header class="top-nav">
+        <div class="nav-container">
+            <a href="/" class="brand-group">
+                <div class="brand-symbol">
+                    <i class="fa-solid fa-network-wired"></i>
+                    <span class="symbol-glow"></span>
+                </div>
+                <div class="brand-text">
+                    <span class="brand-name">Net<span class="brand-accent">Watch</span></span>
+                    <span class="brand-tag">NOC &bull; Network Ops Center</span>
+                </div>
+            </a>
 
-        <nav>
-            <a href="/">Accueil</a>
-            <a href="/about">À propos</a>
-            <a href="/report">Signaler un incident</a>
-        </nav>
+            <div class="system-pulse-badge">
+                <span class="pulse-beacon">
+                    <span class="beacon-ring"></span>
+                    <span class="beacon-dot"></span>
+                </span>
+                <span class="pulse-text">Télémétrie en direct</span>
+            </div>
+
+            <nav class="nav-links" aria-label="Navigation principale">
+                <a href="/" id="nav-accueil" class="nav-item">
+                    <i class="fa-solid fa-chart-pie nav-icon"></i>
+                    <span>Tableau de bord</span>
+                </a>
+                <a href="/about" id="nav-about" class="nav-item active">
+                    <i class="fa-solid fa-circle-nodes nav-icon"></i>
+                    <span>À propos</span>
+                </a>
+                <a href="/report" id="nav-report" class="nav-item nav-action">
+                    <i class="fa-solid fa-triangle-exclamation nav-icon"></i>
+                    <span>Signaler un incident</span>
+                </a>
+            </nav>
+        </div>
     </header>
 
     <main>
-        <h2>À propos de NetWatch</h2>
 
-        <section>
-            <h3>Présentation du projet</h3>
+        <div class="page-header animate__animated animate__fadeInUp">
+            <h2>
+                <span class="page-icon"><i class="fa-solid fa-circle-info"></i></span>
+                À propos de NetWatch
+            </h2>
+            <p>Découvrez les objectifs, les technologies et les limites de cette plateforme pédagogique.</p>
+        </div>
 
-            <p>
-                NetWatch est une application web de démonstration
-                conçue pour présenter les principes de la supervision
-                d'un réseau informatique.
-            </p>
-        </section>
+        <div class="about-grid">
 
-        <section>
-            <h3>Objectifs</h3>
+            <!-- Présentation -->
+            <div class="card animate__animated animate__fadeInUp" style="animation-delay:0.1s">
+                <div class="card-header">
+                    <div class="card-title">
+                        <i class="fa-solid fa-rocket title-icon"></i>
+                        Présentation du projet
+                    </div>
+                </div>
+                <p style="color: var(--color-text-dim); font-size: 0.92rem; line-height: 1.8;">
+                    NetWatch est une application web de démonstration conçue pour présenter les principes
+                    de la supervision d'un réseau informatique. Elle illustre la conteneurisation
+                    et le déploiement cloud avec Docker et AWS EC2.
+                </p>
+            </div>
 
-            <ul>
-                <li>Afficher les équipements d'un réseau.</li>
-                <li>Consulter leur état de fonctionnement.</li>
-                <li>Visualiser les statistiques de disponibilité.</li>
-                <li>Préparer le signalement des incidents réseau.</li>
-            </ul>
-        </section>
+            <!-- Objectifs -->
+            <div class="card animate__animated animate__fadeInUp" style="animation-delay:0.2s">
+                <div class="card-header">
+                    <div class="card-title">
+                        <i class="fa-solid fa-bullseye title-icon"></i>
+                        Objectifs
+                    </div>
+                </div>
+                <ul class="objective-list" id="objectives-list">
+                    <li>Afficher les équipements d'un réseau</li>
+                    <li>Consulter leur état de fonctionnement</li>
+                    <li>Visualiser les statistiques de disponibilité</li>
+                    <li>Préparer le signalement des incidents réseau</li>
+                </ul>
+            </div>
 
-        <section>
-            <h3>Technologies utilisées</h3>
+            <!-- Technologies -->
+            <div class="card animate__animated animate__fadeInUp" style="animation-delay:0.3s">
+                <div class="card-header">
+                    <div class="card-title">
+                        <i class="fa-solid fa-layer-group title-icon"></i>
+                        Technologies utilisées
+                    </div>
+                </div>
+                <ul class="tech-list" id="tech-list">
+                    <li>
+                        <div class="tech-icon"><i class="fa-brands fa-python"></i></div>
+                        <div>
+                            <strong>Python</strong>
+                            <p>Logique de l'application</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="tech-icon"><i class="fa-solid fa-flask"></i></div>
+                        <div>
+                            <strong>Flask</strong>
+                            <p>Framework web léger</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="tech-icon"><i class="fa-brands fa-html5"></i></div>
+                        <div>
+                            <strong>HTML / CSS</strong>
+                            <p>Structure et présentation graphique</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="tech-icon"><i class="fa-brands fa-docker"></i></div>
+                        <div>
+                            <strong>Docker</strong>
+                            <p>Conteneurisation de l'application</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="tech-icon"><i class="fa-brands fa-aws"></i></div>
+                        <div>
+                            <strong>AWS EC2</strong>
+                            <p>Hébergement cloud</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
 
-            <ul>
-                <li><strong>Python :</strong> logique de l'application.</li>
-                <li><strong>Flask :</strong> framework web.</li>
-                <li><strong>HTML :</strong> structure des pages.</li>
-                <li><strong>CSS :</strong> présentation graphique.</li>
-                <li><strong>Docker :</strong> conteneurisation prévue.</li>
-                <li><strong>AWS EC2 :</strong> hébergement cloud prévu.</li>
-            </ul>
-        </section>
+            <!-- Limites -->
+            <div class="card animate__animated animate__fadeInUp" style="animation-delay:0.4s">
+                <div class="card-header">
+                    <div class="card-title">
+                        <i class="fa-solid fa-triangle-exclamation title-icon" style="color: var(--color-orange);"></i>
+                        Limites actuelles
+                    </div>
+                    <span class="card-badge" style="background: rgba(255,140,0,0.15); color: var(--color-orange); border-color: rgba(255,140,0,0.25);">
+                        v1.0 — Demo
+                    </span>
+                </div>
+                <p style="color: var(--color-text-dim); font-size: 0.92rem; line-height: 1.8;">
+                    Les équipements et leurs états sont <strong style="color: var(--color-orange);">simulés</strong>.
+                    Cette version ne réalise pas encore de tests réseau en temps réel.
+                    Les signalements sont conservés temporairement en mémoire et disparaissent
+                    au redémarrage de l'application.
+                </p>
+            </div>
 
-        <section>
-            <h3>Limites actuelles</h3>
+        </div>
 
-            <p>
-                Les équipements et leurs états sont simulés.
-                Cette version ne réalise pas encore de tests réseau
-                en temps réel.
-            </p>
-        </section>
     </main>
 
     <footer>
-        <p>&copy; 2026 NetWatch - Projet pédagogique</p>
+        <div class="footer-inner">
+            <span class="footer-brand">⬡ NetWatch</span>
+            <span class="footer-copy">© 2026 NetWatch — Projet pédagogique</span>
+            <div class="footer-links">
+                <a href="/">Tableau de bord</a>
+                <a href="/report">Signaler</a>
+            </div>
+        </div>
     </footer>
 
 </body>
