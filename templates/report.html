@@ -1,95 +1,169 @@
 <!DOCTYPE html>
+
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <meta name="description" content="Signaler un incident réseau — Formulaire de signalement NetWatch pour décrire un problème sur un équipement réseau.">
     <title>NetWatch | Signaler un incident</title>
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+```
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+```
+
 </head>
 
 <body>
 
-    <header>
-        <h1>NetWatch</h1>
-        <p>Plateforme de supervision réseau</p>
+```
+<header class="top-nav">
+    <div class="nav-container">
+        <a href="/" class="brand-group">
+            <div class="brand-symbol">
+                <i class="fa-solid fa-network-wired"></i>
+                <span class="symbol-glow"></span>
+            </div>
+            <div class="brand-text">
+                <span class="brand-name">Net<span class="brand-accent">Watch</span></span>
+                <span class="brand-tag">NOC &bull; Network Ops Center</span>
+            </div>
+        </a>
 
-        <nav>
-            <a href="/">Accueil</a>
-            <a href="/about">À propos</a>
-            <a href="/report">Signaler un incident</a>
+        <div class="system-pulse-badge">
+            <span class="pulse-beacon">
+                <span class="beacon-ring"></span>
+                <span class="beacon-dot"></span>
+            </span>
+            <span class="pulse-text">Télémétrie en direct</span>
+        </div>
+
+        <nav class="nav-links" aria-label="Navigation principale">
+            <a href="/" id="nav-accueil" class="nav-item">
+                <i class="fa-solid fa-chart-pie nav-icon"></i>
+                <span>Tableau de bord</span>
+            </a>
+            <a href="/about" id="nav-about" class="nav-item">
+                <i class="fa-solid fa-circle-nodes nav-icon"></i>
+                <span>À propos</span>
+            </a>
+            <a href="/report" id="nav-report" class="nav-item nav-action active">
+                <i class="fa-solid fa-triangle-exclamation nav-icon"></i>
+                <span>Signaler un incident</span>
+            </a>
         </nav>
-    </header>
+    </div>
+</header>
 
-    <main>
-        <h2>Signaler un incident</h2>
+<main>
 
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
+    <div class="page-header animate__animated animate__fadeInUp">
+        <h2>
+            <span class="page-icon" style="background: var(--color-red-dim); border-color: rgba(255,71,87,0.3);">
+                <i class="fa-solid fa-triangle-exclamation" style="color: var(--color-red);"></i>
+            </span>
+            Signaler un incident
+        </h2>
+        <p>Utilisez ce formulaire pour décrire un problème rencontré sur un équipement réseau.</p>
+    </div>
+
+    <!-- Messages flash -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages animate__animated animate__fadeInDown" id="flash-messages">
                 {% for category, message in messages %}
                     <div class="message {{ category }}">
+                        {% if category == 'success' %}
+                            <i class="fa-solid fa-circle-check msg-icon"></i>
+                        {% else %}
+                            <i class="fa-solid fa-circle-xmark msg-icon"></i>
+                        {% endif %}
                         {{ message }}
                     </div>
                 {% endfor %}
-            {% endif %}
-        {% endwith %}
+            </div>
+        {% endif %}
+    {% endwith %}
 
-        <p class="page-intro">
-            Utilisez ce formulaire pour décrire un problème rencontré sur un équipement réseau.
-            Les champs marqués d’un <span class="required">*</span> sont obligatoires.
-        </p>
+    <!-- Formulaire de signalement -->
+    <div class="card animate__animated animate__fadeInUp" style="animation-delay:0.15s; max-width: 680px;">
 
-        <section class="report-form-section">
-            <h3>Formulaire de signalement</h3>
+        <div class="card-header">
+            <div class="card-title">
+                <i class="fa-solid fa-pen-to-square title-icon"></i>
+                Formulaire de signalement
+            </div>
+        </div>
 
-            <form action="/report" method="POST" class="report-form">
+        <form action="/report" method="POST" id="incident-form">
 
-                <div class="form-group">
-                    <label for="equipment" class="form-label">
-                        Équipement concerné <span class="required">*</span>
-                    </label>
+            <!-- Équipement -->
+            <div class="form-group">
+                <label for="equipment" class="form-label">
+                    <i class="fa-solid fa-server" style="margin-right:5px; opacity:.6;"></i>
+                    Équipement concerné <span class="required">*</span>
+                </label>
 
-                    <select id="equipment" name="equipment" class="form-control" required>
-                        <option value="">-- Choisir un équipement --</option>
-                        <option value="Serveur principal">Serveur principal</option>
-                        <option value="Routeur central">Routeur central</option>
-                        <option value="Switch étage 1">Switch étage 1</option>
-                        <option value="Serveur de sauvegarde">Serveur de sauvegarde</option>
-                    </select>
-                </div>
+                <select id="equipment" name="equipment" class="form-control" required>
+                    <option value="">— Choisir un équipement —</option>
+                    <option value="Serveur principal">Serveur principal</option>
+                    <option value="Routeur central">Routeur central</option>
+                    <option value="Switch étage 1">Switch étage 1</option>
+                    <option value="Serveur de sauvegarde">Serveur de sauvegarde</option>
+                </select>
+            </div>
 
-                <div class="form-group">
-                    <label for="description" class="form-label">
-                        Description du problème <span class="required">*</span>
-                    </label>
+            <!-- Description -->
+            <div class="form-group">
+                <label for="description" class="form-label">
+                    <i class="fa-solid fa-file-lines" style="margin-right:5px; opacity:.6;"></i>
+                    Description du problème <span class="required">*</span>
+                </label>
 
-                    <textarea
-                        id="description"
-                        name="description"
-                        class="form-control"
-                        rows="6"
-                        required
-                        placeholder="Décrivez le problème rencontré (symptômes, heure, contexte...)"
-                    ></textarea>
+                <textarea
+                    id="description"
+                    name="description"
+                    class="form-control"
+                    rows="6"
+                    required
+                    placeholder="Décrivez le problème rencontré : symptômes, heure de détection, impact sur le réseau..."
+                ></textarea>
 
-                    <p class="help-text">
-                        Soyez aussi précis que possible : nom de l’équipement, heure de l’incident,
-                        message d’erreur éventuel.
-                    </p>
-                </div>
+                <p class="help-text">
+                    Soyez aussi précis que possible : nom de l’équipement, heure de l’incident
+                    et message d’erreur éventuel.
+                </p>
+            </div>
 
-                <button type="submit" class="btn-submit">
-                    Envoyer le signalement
-                </button>
+            <!-- Bouton d'envoi -->
+            <button type="submit" class="btn-submit" id="submit-report">
+                <i class="fa-solid fa-paper-plane"></i>
+                Envoyer le signalement
+            </button>
 
-            </form>
-        </section>
-    </main>
+        </form>
 
-    <footer>
-        <p>&copy; 2026 NetWatch - Projet pédagogique</p>
-    </footer>
+    </div>
+
+</main>
+
+<footer>
+    <div class="footer-inner">
+        <span class="footer-brand">⬡ NetWatch</span>
+        <span class="footer-copy">© 2026 NetWatch — Projet pédagogique</span>
+        <div class="footer-links">
+            <a href="/">Tableau de bord</a>
+            <a href="/about">À propos</a>
+        </div>
+    </div>
+</footer>
+```
 
 </body>
 </html>
