@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}NetWatch — Supervision & Cloud Computing{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+</head>
+<body>
+
+    <!-- Barre de Navigation Principale -->
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="{{ url_for('dashboard') }}" class="brand">
+                <div class="brand-icon">NW</div>
+                <div class="brand-text">NetWatch</div>
+                <span class="brand-badge">Cloud EC2</span>
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="{{ url_for('dashboard') }}" class="nav-link {% if request.endpoint == 'dashboard' %}active{% endif %}">Tableau de bord</a></li>
+                <li><a href="{{ url_for('reports_list') }}" class="nav-link {% if request.endpoint == 'reports_list' %}active{% endif %}">Rapports d'incident</a></li>
+                <li><a href="{{ url_for('about') }}" class="nav-link {% if request.endpoint == 'about' %}active{% endif %}">À propos</a></li>
+            </ul>
+
+            <a href="{{ url_for('create_report') }}" class="nav-cta">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                Nouveau rapport
+            </a>
+        </div>
+    </header>
+
+    <!-- Sous-bandeau d'information système -->
+    <div class="sub-header">
+        <div class="sub-header-container">
+            <div class="cloud-pill">
+                <span class="pulse-dot"></span>
+                <strong>Infrastructure AWS EC2 :</strong> 
+                <span>{{ public_ip }} (Port 80)</span>
+            </div>
+            <div class="cloud-pill">
+                <span>Docker Hub : <code>{{ docker_image }}</code></span>
+                <span>•</span>
+                <span>Statut : <span style="color: var(--green-400); font-weight: 600;">Opérationnel 100%</span></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Conteneur de contenu principal -->
+    <main class="main-wrapper">
+        <!-- Messages Flash -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">
+                            <span>{{ message }}</span>
+                            <button onclick="this.parentElement.remove()" style="background:none;border:none;cursor:pointer;font-weight:bold;color:inherit;">✕</button>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Pied de Page -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div>
+                <strong>NetWatch</strong> — Mini-projet de Cloud Computing & Conteneurisation (2026).
+            </div>
+            <div>
+                Équipe : <strong>SOMMER67</strong> • <strong>varanjfhueijd</strong> • <strong>ametech25</strong>
+            </div>
+            <div>
+                <a href="{{ github_repo }}" target="_blank">Dépôt GitHub</a> | 
+                <a href="https://hub.docker.com/r/sommer369/netwatch" target="_blank">Docker Hub</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

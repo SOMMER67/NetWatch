@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+
+{% block title %}NetWatch — Tableau de bord de supervision{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 24px;">
+    <h1 style="font-size: 24px; font-weight: 800; color: var(--blue-900);">Tableau de bord de supervision réseau</h1>
+    <p style="color: var(--text-muted); font-size: 14px;">Surveillance en direct des équipements, connectivité et bande passante du réseau d'infrastructure.</p>
+</div>
+
+<!-- Cartes KPIs -->
+<div class="stats-grid">
+    <div class="stat-card card-green">
+        <div class="stat-header">
+            <span>Disponibilité Globale</span>
+            <span class="stat-badge badge-green">NOC Target</span>
+        </div>
+        <div class="stat-value" style="color: var(--green-600);">{{ uptime_avg }}</div>
+        <div style="font-size: 13px; color: var(--text-muted);">
+            SLA garanti sans interruption
+        </div>
+    </div>
+
+    <div class="stat-card card-green">
+        <div class="stat-header">
+            <span>Équipements Actifs</span>
+            <span class="stat-badge badge-green">100% UP</span>
+        </div>
+        <div class="stat-value">{{ online_devices }} / {{ total_devices }}</div>
+        <div style="font-size: 13px; color: var(--text-muted);">
+            Tous les nœuds répondent au ping
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-header">
+            <span>Bande Passante Globale</span>
+            <span class="stat-badge badge-blue">Live Rx/Tx</span>
+        </div>
+        <div class="stat-value">{{ total_bandwidth }}</div>
+        <div style="font-size: 13px; color: var(--text-muted);">
+            Trafic agrégé inter-nœuds
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-header">
+            <span>Alertes Actives</span>
+            <span class="stat-badge badge-green">0 Alerte</span>
+        </div>
+        <div class="stat-value" style="color: var(--blue-700);">0</div>
+        <div style="font-size: 13px; color: var(--text-muted);">
+            Aucun incident critique non résolu
+        </div>
+    </div>
+</div>
+
+<!-- Inventaire des équipements -->
+<div class="section-card">
+    <div class="section-header">
+        <div class="section-title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--blue-600);"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+            <span>État des Équipements Réseau</span>
+        </div>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <input type="text" id="deviceSearch" placeholder="Filtrer équipement ou IP..." class="form-control" style="width: 240px; padding: 6px 12px; font-size: 13px;">
+            <button onclick="refreshPings()" class="btn btn-outline" style="padding: 6px 12px; font-size: 13px;">
+                🔄 Actualiser
+            </button>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="data-table" id="devicesTable">
+            <thead>
+                <tr>
+                    <th>Équipement</th>
+                    <th>Type</th>
+                    <th>Adresse IP</th>
+                    <th>Statut</th>
+                    <th>Latence Ping</th>
+                    <th>Uptime</th>
+                    <th>Trafic Actuel</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for dev in devices %}
+                <tr>
+                    <td>
+                        <strong style="color: var(--blue-900);">{{ dev.name }}</strong>
+                        <div style="font-size: 12px; color: var(--text-subtle);">ID: {{ dev.id }}</div>
+                    </td>
+                    <td><span class="type-tag">{{ dev.type }}</span></td>
+                    <td><code>{{ dev.ip }}</code></td>
+                    <td>
+                        <span class="status-pill online">
+                            <span class="pulse-dot" style="width: 7px; height: 7px;"></span>
+                            En ligne
+                        </span>
+                    </td>
+                    <td><span class="ping-badge" style="font-weight: 600; color: var(--green-700);">{{ dev.ping }}</span></td>
+                    <td style="color: var(--text-muted);">{{ dev.uptime }}</td>
+                    <td style="font-weight: 500;">{{ dev.traffic }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Section des Rapports Récents -->
+<div class="section-card">
+    <div class="section-header">
+        <div class="section-title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--blue-600);"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+            <span>Derniers Rapports Techniques</span>
+        </div>
+        <a href="{{ url_for('reports_list') }}" class="btn btn-outline" style="padding: 6px 12px; font-size: 13px;">Voir tous les rapports</a>
+    </div>
+
+    <div class="table-responsive">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Titre de l'intervention</th>
+                    <th>Équipement</th>
+                    <th>Auteur</th>
+                    <th>Priorité</th>
+                    <th>Statut</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for rep in recent_reports %}
+                <tr>
+                    <td style="color: var(--text-muted); font-size: 13px;">{{ rep.date }}</td>
+                    <td><strong>{{ rep.title }}</strong></td>
+                    <td style="font-size: 13px;">{{ rep.device }}</td>
+                    <td><span style="font-size: 13px; font-weight: 500;">{{ rep.reporter }}</span></td>
+                    <td>
+                        <span class="type-tag" style="background-color: var(--blue-50); color: var(--blue-700);">{{ rep.severity }}</span>
+                    </td>
+                    <td>
+                        <span class="status-pill online">{{ rep.status }}</span>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

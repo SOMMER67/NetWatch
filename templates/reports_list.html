@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}NetWatch — Liste des Rapports{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 12px;">
+    <div>
+        <h1 style="font-size: 24px; font-weight: 800; color: var(--blue-900);">Historique des Rapports Techniques</h1>
+        <p style="color: var(--text-muted); font-size: 14px;">Journal de bord des interventions et résolutions d'incidents.</p>
+    </div>
+    <a href="{{ url_for('create_report') }}" class="btn btn-primary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        Nouveau rapport
+    </a>
+</div>
+
+<div class="section-card">
+    <div class="table-responsive">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Date</th>
+                    <th>Titre & Description</th>
+                    <th>Équipement</th>
+                    <th>Déclarant</th>
+                    <th>Sévérité</th>
+                    <th>Statut</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for rep in reports %}
+                <tr>
+                    <td><code>#{{ rep.id }}</code></td>
+                    <td style="color: var(--text-muted); font-size: 13px; white-space: nowrap;">{{ rep.date }}</td>
+                    <td style="max-width: 380px;">
+                        <strong style="color: var(--blue-900); display: block; margin-bottom: 4px;">{{ rep.title }}</strong>
+                        <div style="font-size: 13px; color: var(--text-muted); line-height: 1.4;">{{ rep.description }}</div>
+                    </td>
+                    <td style="font-size: 13px;">{{ rep.device }}</td>
+                    <td style="font-size: 13px; font-weight: 500;">{{ rep.reporter }}</td>
+                    <td>
+                        <span class="type-tag">{{ rep.severity }}</span>
+                    </td>
+                    <td>
+                        <span class="status-pill online">{{ rep.status }}</span>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

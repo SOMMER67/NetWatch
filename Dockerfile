@@ -1,25 +1,23 @@
-# Utiliser une image officielle de Python comme base
 FROM python:3.12-slim
 
-# Définir le dossier de travail dans le conteneur
+# Répertoire de travail
 WORKDIR /app
 
-# Copier le fichier des dépendances dans le conteneur
+# Installation des dépendances
 COPY requirements.txt .
-
-# Installer les dépendances Python nécessaires
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copier le code de l'application et ses ressources
-COPY app.py .
-COPY templates/ templates/
-COPY static/ static/
+# Copie du code applicatif, des templates et des fichiers statiques
+COPY . .
 
-# Définir la variable d'environnement du port utilisé par Flask
-ENV PORT=5000
-
-# Indiquer que l'application utilise le port 5000
+# Port exposé documenté
 EXPOSE 5000
 
-# Lancer Flask en écoutant sur toutes les interfaces réseau
-CMD ["python", "-c", "from app import app; app.run(host='0.0.0.0', port=5000)"]
+# Variables d'environnement Flask
+ENV FLASK_APP=app.py
+ENV FLASK_RUN_HOST=0.0.0.0
+ENV FLASK_RUN_PORT=5000
+ENV PYTHONUNBUFFERED=1
+
+# Démarrage de l'application sur toutes les interfaces du conteneur
+CMD ["python", "app.py"]

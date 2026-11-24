@@ -1,6 +1,10 @@
-﻿.venv/
-.git/
 __pycache__/
-*.py[cod]
+*.pyc
+*.pyo
+*.pyd
+.git
+.gitignore
+.dockerignore
+venv/
+env/
 .env
-.vscode/
