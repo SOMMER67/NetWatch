@@ -8,7 +8,8 @@
 | :--- | :--- |
 | **Équipe** | 3 membres |
 | **Dépôt GitHub** | [github.com/SOMMER67/NetWatch](https://github.com/SOMMER67/NetWatch) |
-| **Image Docker Hub** | [hub.docker.com/r/sommer369/netwatch](https://hub.docker.com/r/sommer369/netwatch) |
+| **Image Docker Hub (Initiale)** | [hub.docker.com/r/sommer369/netwatch](https://hub.docker.com/r/sommer369/netwatch) |
+| **Image Docker Hub (Mise à jour)** | [hub.docker.com/r/mulix/netwatch](https://hub.docker.com/r/mulix/netwatch) |
 | **Application publique** | [http://13.53.48.105](http://13.53.48.105) |
 | **Date de remise prévue** | 20 octobre 2026 |
 
