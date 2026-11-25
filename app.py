@@ -3,6 +3,7 @@ NetWatch - Application Web de Supervision Réseau
 Mini-projet Cloud Computing - AWS EC2 & Docker
 """
 
+import os
 from datetime import datetime
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 
@@ -188,5 +189,7 @@ def about():
 
 
 if __name__ == "__main__":
-    # Démarre l'application sur toutes les interfaces pour Docker
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    debug = os.environ.get("FLASK_DEBUG", "0").lower() in ("1", "true")
+    # En production, debug est désactivé (False)
+    app.run(host="0.0.0.0", port=port, debug=debug)

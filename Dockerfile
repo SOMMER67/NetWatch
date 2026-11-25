@@ -13,11 +13,10 @@ COPY . .
 # Port exposé documenté
 EXPOSE 5000
 
-# Variables d'environnement Flask
+# Variables d'environnement de production
 ENV FLASK_APP=app.py
-ENV FLASK_RUN_HOST=0.0.0.0
-ENV FLASK_RUN_PORT=5000
+ENV FLASK_DEBUG=0
 ENV PYTHONUNBUFFERED=1
 
-# Démarrage de l'application sur toutes les interfaces du conteneur
-CMD ["python", "app.py"]
+# Serveur WSGI de production (Gunicorn)
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--workers", "2", "--threads", "2", "--timeout", "60", "--access-logfile", "-", "--error-logfile", "-", "app:app"]
